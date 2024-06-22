@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Website - Student Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css" rel="stylesheet">
+    <script defer src="js/scripts.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">School Name</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admissions.html">Admissions</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="student-portal.html">Student Portal</a></li>
+                <li><a href="parent-portal.html">Parent Portal</a></li>
+            </ul>
+            <div class="hamburger-menu" id="hamburger-menu">&#9776;</div>
+        </nav>
+    </header>
+    <main>
+        <section class="student-portal">
+            <h1>Student Portal</h1>
+            <form action="php/student-login.php" method="post" onsubmit="return validateLoginForm(event)">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="error-messages"></div>
+            
+            <div class="error-messages"></div> <!-- Container for error messages -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 School Name. All rights reserved.</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle navigation menu
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+        
+            if (hamburgerMenu && navLinks) {
+                hamburgerMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        
+            // Initialize FullCalendar (Example initialization)
+            var calendarEl = document.getElementById('calendar');
+            if (calendarEl) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth'
+                });
+                calendar.render();
+            }
+        });
+
+        function validateLoginForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const username = form.username.value.trim();
+            const password = form.password.value.trim();
+
+            let isValid = true;
+            let errorMessages = [];
+
+            if (!username) {
+                isValid = false;
+                errorMessages.push('Username is required.');
+            }
+
+            if (!password) {
+                isValid = false;
+                errorMessages.push('Password is required.');
+            }
+
+            if (!isValid) {
+                displayErrors(errorMessages);
+                return false;
+            }
+
+            // Optionally, you can submit the form via AJAX instead of directly
+            form.submit();
+        }
+
+        function displayErrors(errors) {
+            const errorContainer = document.getElementById('error-messages');
+            if (!errorContainer) {
+                const main = document.querySelector('main');
+                const errorDiv = document.createElement('div');
+                errorDiv.id = 'error-messages';
+                errorDiv.style.color = 'red';
+                main.insertBefore(errorDiv, main.firstChild);
+            } else {
+                errorContainer.innerHTML = '';
+            }
+
+            errors.forEach(error => {
+                const errorParagraph = document.createElement('p');
+                errorParagraph.textContent = error;
+                errorContainer.appendChild(errorParagraph);
+            });
+        }
+    </script>
+</body>
+</html>

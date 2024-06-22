@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Website - Parent Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="js/scripts.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">School Name</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admissions.html">Admissions</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="student-portal.html">Student Portal</a></li>
+                <li><a href="parent-portal.html">Parent Portal</a></li>
+            </ul>
+            <div class="hamburger-menu" id="hamburger-menu">&#9776;</div>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <section class="parent-portal">
+            <h1>Parent Portal</h1>
+            <form action="php/parent-login.php" method="post" onsubmit="return validateLoginForm(event)">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="error-messages"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 School Name. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle navigation menu
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+        
+            if (hamburgerMenu && navLinks) {
+                hamburgerMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+
+        function validateLoginForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const username = form.username.value.trim();
+            const password = form.password.value.trim();
+
+            let isValid = true;
+            let errorMessages = [];
+
+            if (!username) {
+                isValid = false;
+                errorMessages.push('Username is required.');
+            }
+
+            if (!password) {
+                isValid = false;
+                errorMessages.push('Password is required.');
+            }
+
+            if (!isValid) {
+                displayErrors(errorMessages);
+                return false;
+            }
+
+            // Optionally, you can submit the form via AJAX instead of directly
+            form.submit();
+        }
+
+        function displayErrors(errors) {
+            const errorContainer = document.getElementById('error-messages');
+            if (!errorContainer) {
+                const main = document.querySelector('main');
+                const errorDiv = document.createElement('div');
+                errorDiv.id = 'error-messages';
+                errorDiv.style.color = 'red';
+                main.insertBefore(errorDiv, main.firstChild);
+            } else {
+                errorContainer.innerHTML = '';
+            }
+
+            errors.forEach(error => {
+                const errorParagraph = document.createElement('p');
+                errorParagraph.textContent = error;
+                errorContainer.appendChild(errorParagraph);
+            });
+        }
+    </script>
+</body>
+</html>
